@@ -1,0 +1,24 @@
+{
+    "name": "havvg/lifecycle",
+    "description": "A component lifecycle processing.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Toni Uebernickel",
+            "email": "tuebernickel@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Havvg\\Component\\Lifecycle\\": ""
+        }
+    },
+    "require": {
+        "php": ">=5.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8|^5.0",
+        "symfony/event-dispatcher": "^2.8|^3.0",
+        "mockery/mockery": "^0.9.5"
+    }
+}
