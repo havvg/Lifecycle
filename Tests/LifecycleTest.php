@@ -2,6 +2,10 @@
 
 namespace Havvg\Component\Lifecycle\Tests;
 
+use Havvg\Component\Lifecycle\Event\EventCollection;
+use Havvg\Component\Lifecycle\Event\EventInterface;
+use Havvg\Component\Lifecycle\Event\EventProcessorInterface;
+use Havvg\Component\Lifecycle\Event\EventProviderInterface;
 use Havvg\Component\Lifecycle\Event\Runtime\EventTriggeredEvent;
 use Havvg\Component\Lifecycle\Lifecycle;
 use Havvg\Component\Lifecycle\LifecycleEvents;
@@ -13,10 +17,10 @@ class LifecycleTest extends \PHPUnit_Framework_TestCase
 {
     public function testHandle()
     {
-        $event = \Mockery::mock('Havvg\Component\Lifecycle\Event\EventInterface');
-        $provider = \Mockery::mock('Havvg\Component\Lifecycle\Event\EventProviderInterface');
-        $provider->shouldReceive('getEvents')->andReturn([$event]);
-        $processor = \Mockery::spy('Havvg\Component\Lifecycle\Event\EventProcessorInterface');
+        $event = \Mockery::mock(EventInterface::class);
+        $provider = \Mockery::mock(EventProviderInterface::class);
+        $provider->shouldReceive('getEvents')->andReturn((new EventCollection())->addEvent($event));
+        $processor = \Mockery::spy(EventProcessorInterface::class);
 
         $lifecycle = new Lifecycle($provider, $processor);
         $lifecycle->handle();
@@ -31,9 +35,9 @@ class LifecycleTest extends \PHPUnit_Framework_TestCase
 
     public function testEventTriggered()
     {
-        $event = \Mockery::mock('Havvg\Component\Lifecycle\Event\EventInterface');
-        $provider = \Mockery::mock('Havvg\Component\Lifecycle\Event\EventProviderInterface');
-        $processor = \Mockery::spy('Havvg\Component\Lifecycle\Event\EventProcessorInterface');
+        $event = \Mockery::mock(EventInterface::class);
+        $provider = \Mockery::mock(EventProviderInterface::class);
+        $processor = \Mockery::spy(EventProcessorInterface::class);
 
         $lifecycle = new Lifecycle($provider, $processor);
         $lifecycle->onEventTriggered(new EventTriggeredEvent($event));

@@ -2,7 +2,10 @@
 
 namespace Havvg\Component\Lifecycle\Tests\Consequence;
 
+use Havvg\Component\Lifecycle\Artifact\ArtifactAwareInterface;
+use Havvg\Component\Lifecycle\Artifact\ArtifactInterface;
 use Havvg\Component\Lifecycle\Consequence\ConsequenceCollection;
+use Havvg\Component\Lifecycle\Consequence\ConsequenceInterface;
 
 /**
  * @covers \Havvg\Component\Lifecycle\Consequence\ConsequenceCollection
@@ -45,7 +48,7 @@ class ConsequenceCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsArtifactAware()
     {
-        $artifact = \Mockery::mock('Havvg\Component\Lifecycle\Artifact\ArtifactInterface');
+        $artifact = \Mockery::mock(ArtifactInterface::class);
 
         $collection = new ConsequenceCollection();
         $collection->setArtifact($artifact);
@@ -59,22 +62,23 @@ class ConsequenceCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testSettingArtifactAppliesToConsequences()
     {
-        $artifact = \Mockery::mock('Havvg\Component\Lifecycle\Artifact\ArtifactInterface');
-        $consequence = \Mockery::spy('Havvg\Component\Lifecycle\Consequence\ConsequenceInterface, Havvg\Component\Lifecycle\Artifact\ArtifactAwareInterface');
+        $artifact = \Mockery::mock(ArtifactInterface::class);
+        $consequence = \Mockery::mock(implode(',', [ConsequenceInterface::class, ArtifactAwareInterface::class]));
+
+        $consequence
+            ->shouldReceive('setArtifact')
+            ->once()
+            ->with($artifact)
+            ->andReturnSelf()
+        ;
 
         $collection = new ConsequenceCollection();
         $collection->addConsequence($consequence);
         $collection->setArtifact($artifact);
-
-        $consequence
-            ->shouldHaveReceived('setArtifact')
-            ->once()
-            ->with($artifact)
-        ;
     }
 
     private function createConsequence()
     {
-        return $this->getMockForAbstractClass('Havvg\Component\Lifecycle\Consequence\ConsequenceInterface');
+        return $this->getMockForAbstractClass(ConsequenceInterface::class);
     }
 }

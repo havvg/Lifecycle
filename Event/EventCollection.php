@@ -9,10 +9,7 @@ class EventCollection implements \IteratorAggregate, EventCollectionInterface
      */
     private $events = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addEvent(EventInterface $event)
+    public function addEvent(EventInterface $event): EventCollectionInterface
     {
         $this->events[] = $event;
 
@@ -20,16 +17,13 @@ class EventCollection implements \IteratorAggregate, EventCollectionInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return EventInterface[]|\Traversable
      */
     public function getIterator()
     {
         return new \ArrayIterator($this->events);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function count()
     {
         return count($this->events);

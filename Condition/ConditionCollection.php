@@ -17,20 +17,14 @@ class ConditionCollection implements \IteratorAggregate, ConditionCollectionInte
      */
     private $conditions = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addCondition(ConditionInterface $condition)
+    public function addCondition(ConditionInterface $condition): ConditionCollectionInterface
     {
         $this->conditions[] = $condition;
 
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setArtifact(ArtifactInterface $artifact = null)
+    public function setArtifact(ArtifactInterface $artifact = null): ArtifactAwareInterface
     {
         $this->artifact = $artifact;
 
@@ -43,25 +37,16 @@ class ConditionCollection implements \IteratorAggregate, ConditionCollectionInte
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getArtifact()
+    public function getArtifact(): ArtifactInterface
     {
         return $this->artifact;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIterator()
     {
         return new \ArrayIterator($this->conditions);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function count()
     {
         return count($this->conditions);

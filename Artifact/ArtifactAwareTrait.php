@@ -4,31 +4,16 @@ namespace Havvg\Component\Lifecycle\Artifact;
 
 trait ArtifactAwareTrait
 {
-    /**
-     * @var ArtifactInterface|null
-     */
-    private $artifact = null;
+    private $artifact;
 
-    /**
-     * Sets the Artifact on this object.
-     *
-     * @param ArtifactInterface|null $artifact
-     *
-     * @return $this
-     */
-    public function setArtifact(ArtifactInterface $artifact = null)
+    public function setArtifact(ArtifactInterface $artifact = null): ArtifactAwareInterface
     {
         $this->artifact = $artifact;
 
         return $this;
     }
 
-    /**
-     * Returns the Artifact, if any.
-     *
-     * @return ArtifactInterface|null
-     */
-    public function getArtifact()
+    public function getArtifact(): ?ArtifactInterface
     {
         return $this->artifact;
     }

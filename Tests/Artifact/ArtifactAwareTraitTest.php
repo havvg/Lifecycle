@@ -2,7 +2,8 @@
 
 namespace Havvg\Component\Lifecycle\Tests\Artifact;
 
-use Havvg\Component\Lifecycle\Artifact\ArtifactAwareTrait;
+use Havvg\Component\Lifecycle\Artifact\ArtifactInterface;
+use Havvg\Component\Lifecycle\Tests\Mock\ArtifactAware;
 
 /**
  * @covers \Havvg\Component\Lifecycle\Artifact\ArtifactAwareTrait
@@ -21,7 +22,7 @@ class ArtifactAwareTraitTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetAndUnsetArtifact()
     {
-        $artifact = \Mockery::mock('Havvg\Component\Lifecycle\Artifact\ArtifactInterface');
+        $artifact = \Mockery::mock(ArtifactInterface::class);
 
         $object = $this->createArtifactAware();
 
@@ -32,11 +33,8 @@ class ArtifactAwareTraitTest extends \PHPUnit_Framework_TestCase
         static::assertNull($object->getArtifact());
     }
 
-    /**
-     * @return ArtifactAwareTrait
-     */
     private function createArtifactAware()
     {
-        return $this->getMockForTrait('Havvg\Component\Lifecycle\Artifact\ArtifactAwareTrait');
+        return new ArtifactAware();
     }
 }

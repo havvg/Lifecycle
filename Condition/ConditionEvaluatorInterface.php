@@ -11,5 +11,5 @@ interface ConditionEvaluatorInterface
      *
      * @return bool|null Null is returned to abstain.
      */
-    public function isFulfilled(ConditionInterface $condition);
+    public function isFulfilled(ConditionInterface $condition): ?bool;
 }

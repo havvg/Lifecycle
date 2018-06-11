@@ -2,33 +2,21 @@
 
 namespace Havvg\Component\Lifecycle\Event;
 
-class ChainProvider implements EventProviderInterface
+final class ChainProvider implements EventProviderInterface
 {
     /**
      * @var EventProviderInterface[]
      */
     private $providers = [];
 
-    /**
-     * Adds a provider to utilize.
-     *
-     * @param EventProviderInterface $provider
-     *
-     * @return ChainProvider
-     */
-    public function add(EventProviderInterface $provider)
+    public function add(EventProviderInterface $provider): ChainProvider
     {
         $this->providers[] = $provider;
 
         return $this;
     }
 
-    /**
-     * Provides a complete list of all lifecycle events provided by the set providers.
-     *
-     * @return EventCollectionInterface
-     */
-    public function getEvents()
+    public function getEvents(): EventCollectionInterface
     {
         $collection = new EventCollection();
 

@@ -9,24 +9,14 @@ class ChainEvaluator implements ConditionEvaluatorInterface
      */
     private $evaluators = [];
 
-    /**
-     * Adds an evaluator to utilize.
-     *
-     * @param ConditionEvaluatorInterface $evaluator
-     *
-     * @return ChainEvaluator
-     */
-    public function add(ConditionEvaluatorInterface $evaluator)
+    public function add(ConditionEvaluatorInterface $evaluator): ChainEvaluator
     {
         $this->evaluators[] = $evaluator;
 
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isFulfilled(ConditionInterface $condition)
+    public function isFulfilled(ConditionInterface $condition): ?bool
     {
         foreach ($this->evaluators as $eachEvaluator) {
             $isFulfilled = $eachEvaluator->isFulfilled($condition);
@@ -35,6 +25,6 @@ class ChainEvaluator implements ConditionEvaluatorInterface
             }
         }
 
-        return;
+        return null;
     }
 }

@@ -9,24 +9,14 @@ class ChainProcessor implements ConsequenceProcessorInterface
      */
     private $processors = [];
 
-    /**
-     * Adds a processor to utilize.
-     *
-     * @param ConsequenceProcessorInterface $processor
-     *
-     * @return ChainProcessor
-     */
-    public function add(ConsequenceProcessorInterface $processor)
+    public function add(ConsequenceProcessorInterface $processor): ChainProcessor
     {
         $this->processors[] = $processor;
 
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process(ConsequenceInterface $consequence)
+    public function process(ConsequenceInterface $consequence): void
     {
         foreach ($this->processors as $eachProcessor) {
             $eachProcessor->process($consequence);

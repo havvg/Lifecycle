@@ -2,7 +2,10 @@
 
 namespace Havvg\Component\Lifecycle\Tests\Condition;
 
+use Havvg\Component\Lifecycle\Artifact\ArtifactAwareInterface;
+use Havvg\Component\Lifecycle\Artifact\ArtifactInterface;
 use Havvg\Component\Lifecycle\Condition\ConditionCollection;
+use Havvg\Component\Lifecycle\Condition\ConditionInterface;
 
 /**
  * @covers \Havvg\Component\Lifecycle\Condition\ConditionCollection
@@ -45,7 +48,7 @@ class ConditionCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsArtifactAware()
     {
-        $artifact = \Mockery::mock('Havvg\Component\Lifecycle\Artifact\ArtifactInterface');
+        $artifact = \Mockery::mock(ArtifactInterface::class);
 
         $collection = new ConditionCollection();
         $collection->setArtifact($artifact);
@@ -59,22 +62,23 @@ class ConditionCollectionTest extends \PHPUnit_Framework_TestCase
      */
     public function testSettingArtifactAppliesToConditions()
     {
-        $artifact = \Mockery::mock('Havvg\Component\Lifecycle\Artifact\ArtifactInterface');
-        $condition = \Mockery::spy('Havvg\Component\Lifecycle\Condition\ConditionInterface, Havvg\Component\Lifecycle\Artifact\ArtifactAwareInterface');
+        $artifact = \Mockery::mock(ArtifactInterface::class);
+        $condition = \Mockery::mock(implode(',', [ConditionInterface::class, ArtifactAwareInterface::class]));
+
+        $condition
+            ->shouldReceive('setArtifact')
+            ->once()
+            ->with($artifact)
+            ->andReturnSelf()
+        ;
 
         $collection = new ConditionCollection();
         $collection->addCondition($condition);
         $collection->setArtifact($artifact);
-
-        $condition
-            ->shouldHaveReceived('setArtifact')
-            ->once()
-            ->with($artifact)
-        ;
     }
 
     private function createCondition()
     {
-        return $this->getMockForAbstractClass('Havvg\Component\Lifecycle\Condition\ConditionInterface');
+        return $this->getMockForAbstractClass(ConditionInterface::class);
     }
 }

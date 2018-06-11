@@ -2,6 +2,13 @@
 
 namespace Havvg\Component\Lifecycle\Tests\Event;
 
+use Havvg\Component\Lifecycle\Condition\ConditionCollection;
+use Havvg\Component\Lifecycle\Condition\ConditionEvaluatorInterface;
+use Havvg\Component\Lifecycle\Condition\ConditionInterface;
+use Havvg\Component\Lifecycle\Consequence\ConsequenceCollection;
+use Havvg\Component\Lifecycle\Consequence\ConsequenceInterface;
+use Havvg\Component\Lifecycle\Consequence\ConsequenceProcessorInterface;
+use Havvg\Component\Lifecycle\Event\EventInterface;
 use Havvg\Component\Lifecycle\Event\EventProcessor;
 
 /**
@@ -13,9 +20,9 @@ class EventProcessorTest extends \PHPUnit_Framework_TestCase
     {
         $consequence = $this->createConsequence();
 
-        $event = \Mockery::mock('Havvg\Component\Lifecycle\Event\EventInterface');
-        $event->shouldReceive('getConditions')->andReturn([]);
-        $event->shouldReceive('getConsequences')->andReturn([$consequence]);
+        $event = \Mockery::mock(EventInterface::class);
+        $event->shouldReceive('getConditions')->andReturn(new ConditionCollection());
+        $event->shouldReceive('getConsequences')->andReturn((new ConsequenceCollection())->addConsequence($consequence));
 
         $evaluator = $this->createEvaluator();
         $evaluator->shouldNotReceive('isFulfilled');
@@ -31,9 +38,9 @@ class EventProcessorTest extends \PHPUnit_Framework_TestCase
     {
         $condition = $this->createCondition();
 
-        $event = \Mockery::mock('Havvg\Component\Lifecycle\Event\EventInterface');
-        $event->shouldReceive('getConditions')->andReturn([$condition]);
-        $event->shouldReceive('getConsequences')->andReturn([]);
+        $event = \Mockery::mock(EventInterface::class);
+        $event->shouldReceive('getConditions')->andReturn((new ConditionCollection())->addCondition($condition));
+        $event->shouldReceive('getConsequences')->andReturn(new ConsequenceCollection());
 
         $evaluator = $this->createEvaluator();
         $evaluator
@@ -55,9 +62,9 @@ class EventProcessorTest extends \PHPUnit_Framework_TestCase
         $condition = $this->createCondition();
         $consequence = $this->createConsequence();
 
-        $event = \Mockery::mock('Havvg\Component\Lifecycle\Event\EventInterface');
-        $event->shouldReceive('getConditions')->andReturn([$condition]);
-        $event->shouldReceive('getConsequences')->andReturn([$consequence]);
+        $event = \Mockery::mock(EventInterface::class);
+        $event->shouldReceive('getConditions')->andReturn((new ConditionCollection())->addCondition($condition));
+        $event->shouldReceive('getConsequences')->andReturn((new ConsequenceCollection())->addConsequence($consequence));
 
         $evaluator = $this->createEvaluator();
         $evaluator
@@ -79,9 +86,9 @@ class EventProcessorTest extends \PHPUnit_Framework_TestCase
         $condition = $this->createCondition();
         $consequence = $this->createConsequence();
 
-        $event = \Mockery::mock('Havvg\Component\Lifecycle\Event\EventInterface');
-        $event->shouldReceive('getConditions')->andReturn([$condition]);
-        $event->shouldReceive('getConsequences')->andReturn([$consequence]);
+        $event = \Mockery::mock(EventInterface::class);
+        $event->shouldReceive('getConditions')->andReturn((new ConditionCollection())->addCondition($condition));
+        $event->shouldReceive('getConsequences')->andReturn((new ConsequenceCollection())->addConsequence($consequence));
 
         $evaluator = $this->createEvaluator();
         $evaluator
@@ -110,9 +117,9 @@ class EventProcessorTest extends \PHPUnit_Framework_TestCase
         $fulfilled = $this->createCondition();
         $notFulfilled = $this->createCondition();
 
-        $event = \Mockery::mock('Havvg\Component\Lifecycle\Event\EventInterface');
-        $event->shouldReceive('getConditions')->andReturn([$abstained, $fulfilled, $notFulfilled]);
-        $event->shouldReceive('getConsequences')->andReturn([$consequence]);
+        $event = \Mockery::mock(EventInterface::class);
+        $event->shouldReceive('getConditions')->andReturn((new ConditionCollection())->addCondition($abstained)->addCondition($fulfilled)->addCondition($notFulfilled));
+        $event->shouldReceive('getConsequences')->andReturn((new ConsequenceCollection())->addConsequence($consequence));
 
         $evaluator = $this->createEvaluator();
         $evaluator
@@ -130,21 +137,21 @@ class EventProcessorTest extends \PHPUnit_Framework_TestCase
 
     private function createEvaluator()
     {
-        return \Mockery::mock('Havvg\Component\Lifecycle\Condition\ConditionEvaluatorInterface');
+        return \Mockery::mock(ConditionEvaluatorInterface::class);
     }
 
     private function createCondition()
     {
-        return \Mockery::mock('Havvg\Component\Lifecycle\Condition\ConditionInterface');
+        return \Mockery::mock(ConditionInterface::class);
     }
 
     private function createProcessor()
     {
-        return \Mockery::mock('Havvg\Component\Lifecycle\Consequence\ConsequenceProcessorInterface');
+        return \Mockery::mock(ConsequenceProcessorInterface::class);
     }
 
     private function createConsequence()
     {
-        return \Mockery::mock('Havvg\Component\Lifecycle\Consequence\ConsequenceInterface');
+        return \Mockery::mock(ConsequenceInterface::class);
     }
 }

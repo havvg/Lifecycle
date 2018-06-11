@@ -3,6 +3,8 @@
 namespace Havvg\Component\Lifecycle\Tests\Condition;
 
 use Havvg\Component\Lifecycle\Condition\ChainEvaluator;
+use Havvg\Component\Lifecycle\Condition\ConditionEvaluatorInterface;
+use Havvg\Component\Lifecycle\Condition\ConditionInterface;
 
 /**
  * @covers \Havvg\Component\Lifecycle\Condition\ChainEvaluator
@@ -57,12 +59,12 @@ class ChainEvaluatorTest extends \PHPUnit_Framework_TestCase
 
     private function createCondition()
     {
-        return \Mockery::mock('Havvg\Component\Lifecycle\Condition\ConditionInterface');
+        return \Mockery::mock(ConditionInterface::class);
     }
 
     private function createEvaluator($isFulfilled, $condition, \PHPUnit_Framework_MockObject_Matcher_Invocation $matcher = null)
     {
-        $evaluator = $this->getMockForAbstractClass('Havvg\Component\Lifecycle\Condition\ConditionEvaluatorInterface');
+        $evaluator = $this->getMockForAbstractClass(ConditionEvaluatorInterface::class);
         $evaluator
             ->expects($matcher ?: $this->any())
             ->method('isFulfilled')

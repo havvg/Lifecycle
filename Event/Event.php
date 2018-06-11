@@ -13,91 +13,55 @@ use Havvg\Component\Lifecycle\Consequence\ConsequenceInterface;
 
 class Event implements EventInterface, ArtifactAwareInterface
 {
+    private $conditions;
+    private $consequences;
+
     /**
      * @var ArtifactInterface
      */
     private $artifact;
 
-    /**
-     * @var ConditionCollectionInterface
-     */
-    private $conditions;
-
-    /**
-     * @var ConsequenceCollectionInterface
-     */
-    private $consequences;
-
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         $this->conditions = new ConditionCollection();
         $this->consequences = new ConsequenceCollection();
     }
 
-    /**
-     * Adds a condition to this event.
-     *
-     * @param ConditionInterface $condition
-     *
-     * @return Event
-     */
-    public function addCondition(ConditionInterface $condition)
+    public function addCondition(ConditionInterface $condition): Event
     {
         $this->conditions->addCondition($condition);
 
         return $this;
     }
 
-    /**
-     * Adds a consequence to this event.
-     *
-     * @param ConsequenceInterface $consequence
-     *
-     * @return Event
-     */
-    public function addConsequence(ConsequenceInterface $consequence)
+    public function addConsequence(ConsequenceInterface $consequence): Event
     {
         $this->consequences->addConsequence($consequence);
 
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getConditions()
+    public function getConditions(): ConditionCollectionInterface
     {
         return $this->conditions;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getConsequences()
+    public function getConsequences(): ConsequenceCollectionInterface
     {
         return $this->consequences;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setArtifact(ArtifactInterface $artifact = null)
+    public function setArtifact(ArtifactInterface $artifact = null): ArtifactAwareInterface
     {
         $this->artifact = $artifact;
 
-        $this->getConditions()->setArtifact($artifact);
-        $this->getConsequences()->setArtifact($artifact);
+        $this->conditions->setArtifact($artifact);
+        $this->consequences->setArtifact($artifact);
 
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getArtifact()
+    public function getArtifact(): ArtifactInterface
     {
         return $this->artifact;
     }

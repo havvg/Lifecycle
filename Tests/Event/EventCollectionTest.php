@@ -3,6 +3,7 @@
 namespace Havvg\Component\Lifecycle\Tests\Event;
 
 use Havvg\Component\Lifecycle\Event\EventCollection;
+use Havvg\Component\Lifecycle\Event\EventInterface;
 
 /**
  * @covers \Havvg\Component\Lifecycle\Event\EventCollection
@@ -42,6 +43,6 @@ class EventCollectionTest extends \PHPUnit_Framework_TestCase
 
     private function createEvent()
     {
-        return $this->getMockForAbstractClass('Havvg\Component\Lifecycle\Event\EventInterface');
+        return $this->getMockForAbstractClass(EventInterface::class);
     }
 }

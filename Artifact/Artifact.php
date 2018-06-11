@@ -4,37 +4,25 @@ namespace Havvg\Component\Lifecycle\Artifact;
 
 class Artifact implements ArtifactInterface
 {
-    /**
-     * @var mixed[]
-     */
     private $data = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function set($key, $value)
+    public function set(string $key, $value): ArtifactInterface
     {
         $this->data[$key] = $value;
 
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get($key)
+    public function get(string $key)
     {
         if (!isset($this->data[$key])) {
-            return;
+            return null;
         }
 
         return $this->data[$key];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function all()
+    public function all(): iterable
     {
         return $this->data;
     }

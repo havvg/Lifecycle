@@ -4,19 +4,7 @@ namespace Havvg\Component\Lifecycle\Artifact;
 
 interface ArtifactAwareInterface
 {
-    /**
-     * Sets the Artifact on this object.
-     *
-     * @param ArtifactInterface|null $artifact
-     *
-     * @return $this
-     */
-    public function setArtifact(ArtifactInterface $artifact = null);
+    public function setArtifact(ArtifactInterface $artifact = null): ArtifactAwareInterface;
 
-    /**
-     * Returns the Artifact, if any.
-     *
-     * @return ArtifactInterface|null
-     */
-    public function getArtifact();
+    public function getArtifact(): ?ArtifactInterface;
 }

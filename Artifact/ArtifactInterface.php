@@ -4,29 +4,9 @@ namespace Havvg\Component\Lifecycle\Artifact;
 
 interface ArtifactInterface
 {
-    /**
-     * Saves a specific value under the given key.
-     *
-     * @param string $key
-     * @param mixed  $value
-     *
-     * @return ArtifactInterface
-     */
-    public function set($key, $value);
+    public function set(string $key, $value): ArtifactInterface;
 
-    /**
-     * Retrieves the value saved under the given key.
-     *
-     * @param string $key
-     *
-     * @return mixed
-     */
-    public function get($key);
+    public function get(string $key);
 
-    /**
-     * Returns all entries contained in this artifact.
-     *
-     * @return mixed[]
-     */
-    public function all();
+    public function all(): iterable;
 }

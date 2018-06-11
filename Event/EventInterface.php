@@ -7,17 +7,7 @@ use Havvg\Component\Lifecycle\Consequence\ConsequenceCollectionInterface;
 
 interface EventInterface
 {
-    /**
-     * Returns the conditions to trigger this event.
-     *
-     * @return ConditionCollectionInterface
-     */
-    public function getConditions();
+    public function getConditions(): ConditionCollectionInterface;
 
-    /**
-     * Returns the consequences that arise from this event.
-     *
-     * @return ConsequenceCollectionInterface
-     */
-    public function getConsequences();
+    public function getConsequences(): ConsequenceCollectionInterface;
 }

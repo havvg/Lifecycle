@@ -3,9 +3,12 @@
 namespace Havvg\Component\Lifecycle\Tests\Event\Runtime;
 
 use Havvg\Component\Lifecycle\Event\EventCollection;
+use Havvg\Component\Lifecycle\Event\EventInterface;
 use Havvg\Component\Lifecycle\Event\Runtime\EventTrigger;
+use Havvg\Component\Lifecycle\Event\Runtime\EventTriggeredEvent;
 use Havvg\Component\Lifecycle\LifecycleEvents;
 use Havvg\Component\Lifecycle\Tests\Assert\PHPUnit;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @covers \Havvg\Component\Lifecycle\Event\Runtime\EventTrigger
@@ -14,9 +17,9 @@ class EventTriggerTest extends \PHPUnit_Framework_TestCase
 {
     public function testTriggerEvent()
     {
-        $dispatcher = \Mockery::spy('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $dispatcher = \Mockery::spy(EventDispatcherInterface::class);
 
-        $event = \Mockery::mock('Havvg\Component\Lifecycle\Event\EventInterface');
+        $event = \Mockery::mock(EventInterface::class);
         $trigger = new EventTrigger($dispatcher);
         $trigger->trigger($event);
 
@@ -24,7 +27,7 @@ class EventTriggerTest extends \PHPUnit_Framework_TestCase
             ->shouldHaveReceived('dispatch')
             ->once()
             ->with(LifecycleEvents::EVENT_TRIGGERED, \Mockery::on(function ($actual) use ($event) {
-                return PHPUnit::evaluate($actual, PHPUnit::isInstanceOf('Havvg\Component\Lifecycle\Event\Runtime\EventTriggeredEvent'))
+                return PHPUnit::evaluate($actual, PHPUnit::isInstanceOf(EventTriggeredEvent::class))
                     && PHPUnit::evaluate($actual->getEvent(), PHPUnit::equalTo($event))
                 ;
             }))
@@ -36,9 +39,9 @@ class EventTriggerTest extends \PHPUnit_Framework_TestCase
      */
     public function testTriggerEventCollection()
     {
-        $dispatcher = \Mockery::spy('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $dispatcher = \Mockery::spy(EventDispatcherInterface::class);
 
-        $event = \Mockery::mock('Havvg\Component\Lifecycle\Event\EventInterface');
+        $event = \Mockery::mock(EventInterface::class);
         $collection = new EventCollection();
         $collection->addEvent($event);
 
@@ -49,7 +52,7 @@ class EventTriggerTest extends \PHPUnit_Framework_TestCase
             ->shouldHaveReceived('dispatch')
             ->once()
             ->with(LifecycleEvents::EVENT_TRIGGERED, \Mockery::on(function ($actual) use ($event) {
-                return PHPUnit::evaluate($actual, PHPUnit::isInstanceOf('Havvg\Component\Lifecycle\Event\Runtime\EventTriggeredEvent'))
+                return PHPUnit::evaluate($actual, PHPUnit::isInstanceOf(EventTriggeredEvent::class))
                     && PHPUnit::evaluate($actual->getEvent(), PHPUnit::equalTo($event))
                 ;
             }))

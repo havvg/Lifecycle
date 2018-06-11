@@ -2,6 +2,10 @@
 
 namespace Havvg\Component\Lifecycle\Tests\Event;
 
+use Havvg\Component\Lifecycle\Artifact\ArtifactAwareInterface;
+use Havvg\Component\Lifecycle\Artifact\ArtifactInterface;
+use Havvg\Component\Lifecycle\Condition\ConditionInterface;
+use Havvg\Component\Lifecycle\Consequence\ConsequenceInterface;
 use Havvg\Component\Lifecycle\Event\Event;
 
 /**
@@ -13,8 +17,8 @@ class EventTest extends \PHPUnit_Framework_TestCase
     {
         $event = new Event();
 
-        static::assertInstanceOf('Havvg\Component\Lifecycle\Condition\ConditionCollectionInterface', $event->getConditions());
-        static::assertInstanceOf('Havvg\Component\Lifecycle\Consequence\ConsequenceCollectionInterface', $event->getConsequences());
+        static::assertCount(0, $event->getConditions());
+        static::assertCount(0, $event->getConsequences());
     }
 
     /**
@@ -22,7 +26,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddCondition()
     {
-        $condition = \Mockery::mock('Havvg\Component\Lifecycle\Condition\ConditionInterface');
+        $condition = \Mockery::mock(ConditionInterface::class);
 
         $event = new Event();
 
@@ -36,7 +40,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddConsequence()
     {
-        $consequence = \Mockery::mock('Havvg\Component\Lifecycle\Consequence\ConsequenceInterface');
+        $consequence = \Mockery::mock(ConsequenceInterface::class);
 
         $event = new Event();
 
@@ -50,7 +54,7 @@ class EventTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsArtifactAware()
     {
-        $artifact = \Mockery::mock('Havvg\Component\Lifecycle\Artifact\ArtifactInterface');
+        $artifact = \Mockery::mock(ArtifactInterface::class);
 
         $event = new Event();
         $event->setArtifact($artifact);
@@ -64,17 +68,17 @@ class EventTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetArtifactOnConditionsAndConsequences()
     {
-        $artifact = \Mockery::mock('Havvg\Component\Lifecycle\Artifact\ArtifactInterface');
+        $artifact = \Mockery::mock(ArtifactInterface::class);
 
-        $condition = \Mockery::spy('Havvg\Component\Lifecycle\Condition\ConditionInterface, Havvg\Component\Lifecycle\Artifact\ArtifactAwareInterface');
-        $consequence = \Mockery::spy('Havvg\Component\Lifecycle\Consequence\ConsequenceInterface, Havvg\Component\Lifecycle\Artifact\ArtifactAwareInterface');
+        $condition = \Mockery::mock(implode(',', [ConditionInterface::class, ArtifactAwareInterface::class]));
+        $consequence = \Mockery::mock(implode(',', [ConsequenceInterface::class, ArtifactAwareInterface::class]));
+
+        $condition->shouldReceive('setArtifact')->once()->with($artifact)->andReturnSelf();
+        $consequence->shouldReceive('setArtifact')->once()->with($artifact)->andReturnSelf();
 
         $event = new Event();
         $event->addCondition($condition);
         $event->addConsequence($consequence);
         $event->setArtifact($artifact);
-
-        $condition->shouldHaveReceived('setArtifact')->once()->with($artifact);
-        $consequence->shouldHaveReceived('setArtifact')->once()->with($artifact);
     }
 }

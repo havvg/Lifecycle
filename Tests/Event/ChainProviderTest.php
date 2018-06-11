@@ -3,6 +3,10 @@
 namespace Havvg\Component\Lifecycle\Tests\Event;
 
 use Havvg\Component\Lifecycle\Event\ChainProvider;
+use Havvg\Component\Lifecycle\Event\EventCollection;
+use Havvg\Component\Lifecycle\Event\EventCollectionInterface;
+use Havvg\Component\Lifecycle\Event\EventInterface;
+use Havvg\Component\Lifecycle\Event\EventProviderInterface;
 
 /**
  * @covers \Havvg\Component\Lifecycle\Event\ChainProvider
@@ -14,7 +18,7 @@ class ChainProviderTest extends \PHPUnit_Framework_TestCase
         $provider = new ChainProvider();
         $events = $provider->getEvents();
 
-        static::assertInstanceOf('Havvg\Component\Lifecycle\Event\EventCollectionInterface', $events);
+        static::assertInstanceOf(EventCollectionInterface::class, $events);
         static::assertCount(0, $events);
     }
 
@@ -41,16 +45,21 @@ class ChainProviderTest extends \PHPUnit_Framework_TestCase
 
     private function createEvent()
     {
-        return \Mockery::mock('Havvg\Component\Lifecycle\Event\EventInterface');
+        return \Mockery::mock(EventInterface::class);
     }
 
     private function createEventProvider($events = [])
     {
-        $provider = \Mockery::mock('Havvg\Component\Lifecycle\Event\EventProviderInterface');
+        $collection = new EventCollection();
+        foreach ($events as $event) {
+            $collection->addEvent($event);
+        }
+
+        $provider = \Mockery::mock(EventProviderInterface::class);
         $provider
             ->shouldReceive('getEvents')
             ->once()
-            ->andReturn($events)
+            ->andReturn($collection)
         ;
 
         return $provider;

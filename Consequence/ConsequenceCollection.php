@@ -17,20 +17,14 @@ class ConsequenceCollection implements \IteratorAggregate, ConsequenceCollection
      */
     private $consequences = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function addConsequence(ConsequenceInterface $consequence)
+    public function addConsequence(ConsequenceInterface $consequence): ConsequenceCollectionInterface
     {
         $this->consequences[] = $consequence;
 
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setArtifact(ArtifactInterface $artifact = null)
+    public function setArtifact(ArtifactInterface $artifact = null): ArtifactAwareInterface
     {
         $this->artifact = $artifact;
 
@@ -43,25 +37,16 @@ class ConsequenceCollection implements \IteratorAggregate, ConsequenceCollection
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getArtifact()
+    public function getArtifact(): ArtifactInterface
     {
         return $this->artifact;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getIterator()
     {
         return new \ArrayIterator($this->consequences);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function count()
     {
         return count($this->consequences);
